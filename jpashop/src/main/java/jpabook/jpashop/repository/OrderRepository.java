@@ -22,6 +22,20 @@ public class OrderRepository {
     }
 
     public List<Order> findAll(OrderSearch orderSearch){
-        em.createQuery("select o from Order o join o.member m", Order.class);
+        return em.createQuery("select o from Order o join o.member m" +
+                " where o.status = :status " +
+                " and m.name like :name ", Order.class)
+                .setParameter("status", orderSearch.getOrderStatus())
+                .setParameter("name", orderSearch.getMemberName())
+//                .setFirstResult(100) // 이건 100번째부터 가져오겠다
+                .setMaxResults(1000) // 최대 1000건
+                .getResultList();
+
+        // 위에는 그냥 있을때임
+        // 동적 쿼리 방법
+
+
+
+
     }
 }
